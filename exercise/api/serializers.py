@@ -36,3 +36,10 @@ class IncidentSerializer(serializers.HyperlinkedModelSerializer):
             'status',
             'category'
         ]
+        # Author e Status são campos apenas de leitura.
+        # Na criação de um objeto Incident, author=self.request.user
+        # Status é colocado a Default, i.e., status='VALIDATED'
+        extra_kwargs = {
+            'author': {'read_only': True},
+            'status': {'read_only': True}
+        }

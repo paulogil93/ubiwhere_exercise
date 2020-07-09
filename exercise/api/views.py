@@ -23,3 +23,8 @@ class IncidentViewSet(viewsets.ModelViewSet):
     """
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
+
+    # Override ao método perform_create para poder criar um objecto
+    # do tipo Incident com o utilizador atual
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
