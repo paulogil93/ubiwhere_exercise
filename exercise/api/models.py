@@ -16,7 +16,7 @@ class Incident(models.Model):
         ('RESOLVED', 'Resolved')
     ]
 
-    status = models.CharField(choices=STATUS_CHOICES, default='VALIDATE')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='VALIDATE')
 
     CATEGORY_CHOICES = [
         ('CONSTRUCTION', 'Construction'),
@@ -26,7 +26,7 @@ class Incident(models.Model):
         ('ROAD_CONDITION', 'Road condition')
     ]
 
-    category = models.CharField(choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
 
     class Meta:
         ordering = ['created']
