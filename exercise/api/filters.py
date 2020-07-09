@@ -12,12 +12,4 @@ class UserFilter(filters.FilterSet):
 class IncidentFilter(filters.FilterSet):
     class Meta:
         model = Incident
-        fields = ['author', 'category', 'location']
-        filter_overrides = {
-             models.PointField: {
-                 'filter_class': filters.CharFilter,
-                 'extra': lambda f: {
-                     'widget': forms.TextInput,
-                 },
-             },
-         }
+        fields = ['author', 'category']

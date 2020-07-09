@@ -6,12 +6,12 @@ class Incident(models.Model):
     # O Django trata deste field automaticamente por nós :)
     description = models.TextField()
     location = models.PointField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE) # FIXME: Referenciar username ou id? Check Paulo, check.
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     STATUS_CHOICES = [
-        ('VALIDATE','Validate'),    # FIXME: VALIDATE e VALIDATED parecem ambíguos e podem induzir em erro?
+        ('VALIDATE','Validate'),
         ('VALIDATED','Validated'),
         ('RESOLVED', 'Resolved')
     ]

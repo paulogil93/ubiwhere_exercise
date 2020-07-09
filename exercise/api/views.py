@@ -39,19 +39,23 @@ class IncidentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    @action(detail=False, methods=['GET'], name='Filter by location')
+    @action(detail=False, methods=['GET'], name='Filter by location', )
     def filterByLocation(self, request):
         latitude = request.GET.get('latitude')
         longitude = request.GET.get('longitude')
         radius = request.GET.get('radius')
 
+        try:
+            float(radius)
+            float(longitude)
+            float(latitude)
+            is_numeric = True
+        except:
+            is_numeric = False
+
         # Asserts necessários para que a extra action não rebente :)
-        if radius is None or not radius.isnumeric():
-            return Response({'RadiusError': 'Either Radius is None or it\'s not Numeric.'})
-        if latitude is None or not latitude.isnumeric():
-            return Response({'LatitudeError': 'Either Latitude is None or it\'s not Numeric.'})
-        if longitude is None or not longitude.isnumeric():
-            return Response({'LongitudeError': 'Either Longitude is None or it\'s not Numeric.'})
+        if not is_numeric:
+            return Response({'ParametersError': 'Either \'radius\', \'longitude\' or \'latitude\' is None or it\'s not Numeric.'})
 
         # Ponto de partida, centro do raio de localização
         origin = Point(float(longitude), float(latitude))

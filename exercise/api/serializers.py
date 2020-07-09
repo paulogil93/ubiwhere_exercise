@@ -29,12 +29,12 @@ class IncidentSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             'id', 
             'description',
-            'location',
             'author',
             'created',
             'updated',
             'status',
-            'category'
+            'category',
+            'location'
         ]
         # Author e Status são campos apenas de leitura.
         # Na criação de um objeto Incident, author=self.request.user
@@ -43,3 +43,4 @@ class IncidentSerializer(serializers.HyperlinkedModelSerializer):
             'author': {'read_only': True},
             'status': {'read_only': True}
         }
+
