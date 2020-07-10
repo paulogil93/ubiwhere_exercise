@@ -120,3 +120,8 @@ Basta editar o seguinte ficheiro e trocar *load staticfiles* por *load static*.
 ```
 env/lib/python3.7/site-packages/rest_framework_swagger/templates/rest_framework_swagger/index.html
 ```
+## Postman Collection
+
+Postman Collection para testar os endpoints implementados, bem como as funcionalidades propostas no Exercício.
+
+https://www.getpostman.com/collections/d2d1f8c81930f1eadff4
