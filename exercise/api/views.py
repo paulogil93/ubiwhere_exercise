@@ -1,14 +1,31 @@
 from django.contrib.auth.models import User, Group
 from api.models import Incident
-from rest_framework import viewsets
+from rest_framework import viewsets, status, permissions
 from api.serializers import UserSerializer, GroupSerializer, IncidentSerializer
 from django_filters import rest_framework as filters
 from api.filters import UserFilter, IncidentFilter
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
+from django.http import HttpRequest as Request
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
 from rest_framework.exceptions import ValidationError
+from rest_framework.generics import CreateAPIView
+from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_exempt
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def create_auth(request):
+    serializer = UserSerializer(data=request.data, context={'request': request})
+    
+    if serializer.is_valid():
+        user = serializer.save()
+        group = Group.objects.get(name='Users') 
+        group.user_set.add(user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserViewSet(viewsets.ModelViewSet):
     """

@@ -22,11 +22,13 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'incidents', views.IncidentViewSet)
+#router.register('register', views.create_auth, basename='register-user')
 
 schema_view = get_swagger_view(title='Python & Django Ubiwhere API')
 
 urlpatterns = [
     path('', include(router.urls)),
     path('docs/', schema_view),
+    path('register/', views.create_auth),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
