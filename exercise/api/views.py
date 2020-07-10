@@ -8,6 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
+from rest_framework.exceptions import ValidationError
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -37,7 +38,14 @@ class IncidentViewSet(viewsets.ModelViewSet):
     # Override ao método perform_create para poder criar um objecto
     # do tipo Incident com o utilizador atual
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        latitude = serializer.validated_data.pop('latitude')
+        longitude = serializer.validated_data.pop('longitude')
+        try:
+            point = Point(float(longitude), float(latitude))
+        except:
+            raise ValidationError({'LocationError':'Longitude and Latitude values must be float'})
+
+        serializer.save(author=self.request.user, location=point)
 
     @action(detail=False, methods=['GET'], name='Filter by location', )
     def filterByLocation(self, request):
